@@ -8,7 +8,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 from flaskr.db import get_db
 
 bp = Blueprint('auth', __name__, url_prefix='/auth')
-#
+
 @bp.route('/register', methods=('GET', 'POST'))
 def register():
     if request.method == 'POST':
@@ -39,18 +39,6 @@ def register():
         flash(error)
 
     return render_template('auth/register.html')
-
-@bp.route('/users')
-def users():
-    db = get_db()
-    users = db.execute('select * from user')
-
-    tmp = ''
-    for user in users:
-        tmp = tmp + user['username'] +' '+ user['password'] + '<br/>'
-
-
-    return tmp
 
 @bp.route('/login', methods=('GET', 'POST'))
 def login():

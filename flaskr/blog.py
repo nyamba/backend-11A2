@@ -18,6 +18,13 @@ def index():
     ).fetchall()
     return render_template('blog/index.html', posts=posts)
 
+@bp.route('/detail/<int:post_id>')
+def detail(post_id):
+    db = get_db()
+    post = db.execute(
+        'SELECT * FROM post WHERE id=' + str(post_id)).fetchone()
+    return render_template('blog/detail.html', post=post)
+
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
 def create():
