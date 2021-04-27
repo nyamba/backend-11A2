@@ -1,17 +1,33 @@
 {% extends 'base.html' %}
 
+{% block script %}
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-jquery-editor.min.js"></script>
+  <script src="{{ url_for('static', filename='js/update.js') }}"></script>
+{% endblock %}
+{% block extra_css %}
+  <!-- Editor's Dependecy Style -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.min.css" />
+  <!-- Editor's Style -->
+  <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/update.css') }}">
+{% endblock %}
+
 {% block header %}
   <h1>{% block title %}Edit "{{ post['title'] }}"{% endblock %}</h1>
 {% endblock %}
 
 {% block content %}
-  <form method="post">
+  <form method="post" id="update-form">
     <label for="title">Title</label>
     <input name="title" id="title"
       value="{{ request.form['title'] or post['title'] }}" required>
     <label for="body">Body</label>
-    <textarea name="body" id="body">{{ request.form['body'] or post['body'] }}</textarea>
-    <input type="submit" value="Save">
+    <textarea name="body" id="body" style="display:none">{{ request.form['body'] or post['body']}}</textarea>
+    <div id="editor"></div>
+    <input type="submit" value="Save" class="submit">
   </form>
   <hr>
   <form action="{{ url_for('blog.delete', id=post['id']) }}" method="post">
