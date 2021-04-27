@@ -25,6 +25,14 @@ nav ul li a, nav ul li span, header .action { display: block; padding: 0.5rem; }
 input.danger { color: #cc2f2e; }
 input[type=submit] { align-self: start; min-width: 10em; }
 
+.post header a {
+    text-decoration: none;
+}
+
+.post header a:hover {
+    text-decoration: underline;
+}
+
 blockquote {
 	background: #e3e3e3;
 	padding: 10px;
