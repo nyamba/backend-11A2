@@ -1,13 +1,14 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
+
+from flask import jsonify
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
 
 bp = Blueprint('blog', __name__)
-
 
 
 @bp.route('/')
@@ -19,6 +20,35 @@ def index():
         ' ORDER BY created DESC'
     ).fetchall()
     return render_template('blog/index.html', posts=posts)
+
+
+@bp.route('/like/<int:post_id>/<int:like_count>')
+def increase_like(post_id, like_count):
+    db = get_db()
+    db.execute('UPDATE meta SET like = ?'
+                ' WHERE post_id = ?',
+                (like_count, post_id))
+    db.commit()
+
+    return 'okay'
+
+
+
+
+@bp.route('/meta/<int:post_id>')
+def meta(post_id):
+    db = get_db()
+    meta = db.execute(
+        'select * from meta where post_id=' + str(post_id)).fetchone()
+
+    val = None
+    if meta:
+        val = {
+            'like': meta['like'],
+            'dislike': meta['dislike']
+        }
+
+    return jsonify(val)
 
 
 @bp.route('/detail/<int:post_id>')

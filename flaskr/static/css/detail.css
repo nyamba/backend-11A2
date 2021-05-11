@@ -1,0 +1,19 @@
+.meta {
+	display: flex;
+	background-color: #bef0be;
+	padding: 10px;
+
+}
+
+.btn-edit {
+	margin-left: auto;
+}
+
+.btn {
+	margin: 0 10px;
+	cursor: pointer;
+}
+
+.btn:hover{
+	opacity: 0.7;
+}

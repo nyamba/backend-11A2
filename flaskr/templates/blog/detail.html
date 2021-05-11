@@ -1,5 +1,12 @@
 {% extends 'base.html' %}
 
+{% block extracss %}
+  <link rel="stylesheet" href="/static/css/detail.css"/>
+{% endblock %}
+
+{% block script %}
+  <script type="text/javascript" src="/static/js/detail.js"></script>
+{% endblock %}
 
 {% block header %}
   <h1>{% block title %} {{ post['title'] }} {% endblock %}</h1>
@@ -7,7 +14,17 @@
 
 {% block content %}
   {{post['body'] | markdown}}
-  {% if g.user['id'] == post['author_id'] %}
-	  <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
-  {% endif %}
+  <div class="meta" data-postid="{{post['id']}}">
+  		<span class="btn action-like">Like: <span class='like'>2</span></span>
+  		<span class="btn action-dislike">DisLike: <span class='dislike'>2</span></span>
+  		{% if g.user['id'] == post['author_id'] %}
+	  		<a
+	  			class="action btn-edit"
+	  			href="{{ url_for('blog.update', id=post['id']) }}"
+	  		>
+	  		Edit
+	  	</a>
+  		{% endif %}
+  </div>
+  
 {% endblock %}

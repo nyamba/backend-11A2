@@ -15,3 +15,11 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE meta (
+	 id INTEGER PRIMARY KEY AUTOINCREMENT,
+	 post_id INTEGER NOT NULL,
+	 like INTEGER,
+	 dislike INTEGER,
+	 FOREIGN KEY (post_id) REFERENCES post (id)
+)
