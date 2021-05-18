@@ -4,11 +4,28 @@
   <h1>{% block title %} {{ post['title'] }} {% endblock %}</h1>
 {% endblock %}
 
+{% block extra_css %}
+
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/detail.css') }}">
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/detail.js') }}"></script>
+{% endblock %}
+
 {% block content %}
   <div class="body">
   	{{ post['body'] | markdown }}
   </div>
-  {% if g.user['id'] == post['author_id'] %}
-	  <a class="action" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
+  
+
+  <div class="reaction" data-postid="{{post['id']}}">
+  	<span class="btn like">Like(<span class="like-count">0</span>)</span>
+  	<span class="btn dislike">Dislike(<span class="dislike-count">0</span>)</span>
+  	{% if g.user['id'] == post['author_id'] %}
+	  <a class="action edit" href="{{ url_for('blog.update', id=post['id']) }}">Edit</a>
   {% endif %}
+  </div>
+
+
 {% endblock %}

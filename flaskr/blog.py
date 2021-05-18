@@ -1,12 +1,58 @@
 from flask import (
     Blueprint, flash, g, redirect, render_template, request, url_for
 )
+
+from flask import jsonify
 from werkzeug.exceptions import abort
 
 from flaskr.auth import login_required
 from flaskr.db import get_db
 
 bp = Blueprint('blog', __name__)
+
+
+@bp.route('/reaction/<int:post_id>')
+def reaction(post_id):
+    db = get_db()
+    data = db.execute(
+        'SELECT * FROM reaction WHERE post_id=' + str(post_id)).fetchone()
+
+    if data is None:
+        return jsonify([])
+
+    ss = {
+        'like': data['like'],
+        'dislike': data['dislike'],
+        'post_id': data['post_id']
+    }
+
+    return jsonify(ss)
+
+
+@bp.route('/set/like/<int:post_id>/<int:count>')
+def set_like(post_id, count):
+    db = get_db()
+    db.execute(
+        'UPDATE reaction SET like = ?'
+        ' WHERE post_id = ?',
+        (count, post_id)
+    )
+    db.commit()
+
+    return 'ok'
+
+
+@bp.route('/set/dislike/<int:post_id>/<int:count>')
+def set_dislike(post_id, count):
+    db = get_db()
+    db.execute(
+        'UPDATE reaction SET dislike = ?'
+        ' WHERE post_id = ?',
+        (count, post_id)
+    )
+    db.commit()
+
+    return 'ok'
 
 
 @bp.route('/')

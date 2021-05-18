@@ -15,3 +15,11 @@ CREATE TABLE post (
   body TEXT NOT NULL,
   FOREIGN KEY (author_id) REFERENCES user (id)
 );
+
+CREATE TABLE reaction (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  post_id INTEGER NOT NULL,
+  like INTEGER DEFAULT 0,
+  dislike INTEGER DEFAULT 0,
+  FOREIGN KEY (post_id) REFERENCES post (id)
+);
